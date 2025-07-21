@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDV Primos Barbearia</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Cabeçalho preto com título -->
+    <header>
+      <img src="images/primosLogo.jpg" alt="primosLogo" width="120px">
+    </header>
+
+    <!-- Data -->
+    <section id="data-caixa" class="data">
+    </section>
+
+    <!-- Caixa com valor e entradas/saídas -->
+    <section class="caixa">
+      <h3>Caixa</h3>
+      <p class="valor">
+        <strong id="valor-caixa"></strong>
+        <button
+          id="toggle-caixa"
+          style="border: none; background: none; cursor: pointer"
+        >
+          👁️
+        </button>
+      </p>
+
+      <div class="resumo">
+        <span class="resumo-entrada"></span>
+        <span class="resumo-saida">-</span>
+      </div>
+    </section>
+
+    <!-- Lista de movimentações -->
+    <section class="movimentacoes">
+      <h3>Movimentações</h3>
+
+    </section>
+    <button id="botao-cadeado">🔒</button>
+    <!-- Menu inferior com ícones (placeholders) -->
+    <footer>
+      <nav>
+        <a href="estoque.html">📦</a>
+        <button id="toggle-botoes">➕</button>
+        <a href="relatorio.html">📊</a>
+      </nav>
+    </footer>
+    <div
+      id="botoes-flutuantes" 
+    >
+      <a href="entrada.html">Entrada</a>
+      <a href="venda.html">Venda</a>
+      <a href="saida.html">Saída</a>
+    </div>
+    <!-- Modal 1 – Confirmação inicial -->
+    <div class="modal" id="modal1">
+      <div class="modal-box">
+        <p>Deseja iniciar o fechamento de caixa?</p>
+        <div class="modal-botoes">
+          <button onclick="fecharModal(1)">Cancelar</button>
+          <button onclick="proximoModal(2)">Continuar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 – Conferência de estoque -->
+    <div class="modal" id="modal2">
+      <div class="modal-box">
+        <p>Seu estoque está correto?</p>
+        <div class="estoque-simulacao">
+
+        </div>
+        <div class="modal-botoes">
+          <button onclick="fecharModal(2)">Cancelar</button>
+          <button onclick="proximoModal(3)">Continuar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3 – Conferência de caixa -->
+    <div class="modal" id="modal3">
+      <div class="modal-box">
+        <p>O seu caixa está correto?</p>
+        <div class="modal-botoes">
+          <button onclick="fecharModal(3)">Cancelar</button>
+          <button onclick="proximoModal(4)">Continuar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4 – Confirmação final -->
+    <div class="modal" id="modal4">
+      <div class="modal-box">
+        <p>Deseja finalizar o fechamento de caixa?</p>
+        <div class="modal-botoes">
+          <button onclick="fecharModal(4)">Cancelar</button>
+          <button onclick="finalizarFechamento()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de exclução de movimentação -->
+    <div id="modal-excluir" class="modal" style="display: none">
+      <div class="modal-box">
+        <p>Deseja excluir esta movimentação?</p>
+        <button id="cancelar-exclusao" class="botao-cancelar">Cancelar</button>
+        <button id="confirmar-exclusao" class="botao-confirmar">
+          Confirmar
+        </button>
+      </div>
+    </div>
+    <script src="js/index_script.js"></script>
+    <script src="js/entrada.js"></script>
+    <script src="js/saida.js"></script>
+    <script src="js/sacola.js"></script>
+  </body>
+</html>

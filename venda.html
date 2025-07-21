@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venda</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Cabeçalho -->
+    <header>
+      <h1>PDV Primos Barbearia</h1>
+    </header>
+
+    <!-- Botão Voltar -->
+    <section class="voltar">
+      <a href="index.html" class="botao-voltar">← Voltar</a>
+    </section>
+
+    <!-- Título da tela -->
+    <section class="titulo-formulario">
+      <h2>Venda</h2>
+    </section>
+
+    <!-- Lista de Produtos -->
+    <section class="produtos-grid"></section>
+
+    <!-- Rodapé com total e botão -->
+    <section class="sessao-venda">
+      <div class="resumo-venda">
+        <span><strong>Itens:</strong> 0</span>
+        <span><strong>Total:</strong> R$0,00</span>
+      </div>
+      <a href="sacola.html" class="botao-ver-sacola">Ver Carrinho</a>
+    </section>
+    <!-- Modal Erro -->
+    <div class="modal" id="modal-erro" style="display: none">
+      <div class="modal-box">
+        <p></p>
+        <div class="modal-botoes">
+          <button class="botao-confirmar" onclick="fecharModal()">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/carregarModal.js"></script>
+    <script src="js/venda.js"></script>
+  </body>
+</html>

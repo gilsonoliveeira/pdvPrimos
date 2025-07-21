@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sacola</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Cabeçalho -->
+    <header>
+      <h1>PDV Primos Barbearia</h1>
+    </header>
+
+    <!-- Botão Voltar -->
+    <section class="voltar">
+      <a href="venda.html" class="botao-voltar">← Voltar</a>
+    </section>
+
+    <!-- Título da página -->
+    <section class="titulo-formulario">
+      <h2>Carrinho</h2>
+    </section>
+
+    <!-- Lista de produtos na sacola -->
+    <section class="sacola-lista">
+      <div class="item-sacola"></div>
+    </section>
+
+    <!-- Campo nome do cliente -->
+    <section class="cliente">
+      <label for="cliente">Nome do Cliente</label>
+      <input type="text" id="cliente" placeholder="Digite o nome" />
+    </section>
+
+    <!-- Rodapé com total -->
+    <section class="sessao-venda">
+      <div class="resumo-venda">
+        <span><strong>Itens:</strong> 0</span>
+        <span><strong>Total:</strong> R$00,00</span>
+      </div>
+      <a href="#" class="botao-ver-sacola">Finalizar Venda</a>
+    </section>
+
+    <div class="modal" id="modal-erro" style="display: none">
+      <div class="modal-box">
+        <p></p>
+        <div class="modal-botoes">
+          <button class="botao-confirmar" onclick="fecharModal()">OK</button>
+        </div>
+      </div>
+    </div>
+    <script src="js/sacola.js"></script>
+    <script src="js/index_script.js"></script>
+    <script src="js/carregarModal.js"></script>
+  </body>
+</html>
