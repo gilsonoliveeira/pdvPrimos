@@ -156,3 +156,5 @@ document
     lista.innerHTML = "";
     atualizarResumoVenda();
   });
+
+ 

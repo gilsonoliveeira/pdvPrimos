@@ -5,22 +5,35 @@ const valorCaixa = document.getElementById("valor-caixa");
 
 let valorCaixaAtual = 0; // Mantida no escopo global
 
+function atualizarEstoqueVenda(produtosVendidos) {
+  let produtosEstoque = JSON.parse(localStorage.getItem("produtos")) || [];
+
+  produtosVendidos.forEach((vendido) => {
+    const index = produtosEstoque.findIndex((p) => p.nome === vendido.nome);
+    if (index !== -1) {
+      produtosEstoque[index].quantidade -= vendido.quantidade;
+      if (produtosEstoque[index].quantidade < 0) {
+        produtosEstoque[index].quantidade = 0;
+      }
+    }
+  });
+  localStorage.setItem("produtos", JSON.stringify(produtosEstoque));
+}
+
 // Carrega os produtos do localStorage e adiciona as entradas na tela
 window.onload = function () {
   const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
-
-
   if (movimentacoes.length === 0) {
     const novaMovimentacao = document.createElement("div");
     novaMovimentacao.classList.add("movimento");
     novaMovimentacao.innerHTML = `
     <strong>Sem movimentações até o momento!</strong>
   `;
-  novaMovimentacao.style.justifyContent = 'center';
-  novaMovimentacao.style.color = 'red';
+    novaMovimentacao.style.justifyContent = "center";
+    novaMovimentacao.style.color = "red";
 
-  const container = document.querySelector('.movimentacoes');
-  container.appendChild(novaMovimentacao);
+    const container = document.querySelector(".movimentacoes");
+    container.appendChild(novaMovimentacao);
   }
 
   movimentacoes.forEach((mov) => {
@@ -33,7 +46,7 @@ window.onload = function () {
         ? mov.produtos.map((prod) => prod.nome).join(", ")
         : "Nenhum produto";
 
-      adicionarVenda(mov.nome, mov.produtos, mov.valor);
+      exibirVenda(mov.nome, mov.produtos, mov.valor);
     }
   });
 };
@@ -153,6 +166,7 @@ function adicionarSaida(nomeProduto, descricao, preco) {
 window.adicionarSaida = adicionarSaida;
 
 function adicionarVenda(nomeCliente, produtos, totalValor) {
+  atualizarEstoqueVenda(produtos);
   totalValor = parseFloat(totalValor) || 0;
 
   const novaMovimentacao = document.createElement("div");
@@ -192,6 +206,44 @@ function adicionarVenda(nomeCliente, produtos, totalValor) {
 }
 
 window.adicionarVenda = adicionarVenda;
+
+function exibirVenda(nomeCliente, produtos, totalValor) {
+  totalValor = parseFloat(totalValor) || 0;
+
+  const novaMovimentacao = document.createElement("div");
+  novaMovimentacao.classList.add("movimento");
+  novaMovimentacao.innerHTML = `
+    <div class="barra cor-azul"></div>
+    <div class="info">
+      <strong>${nomeCliente}</strong>
+      <p>Itens: ${produtos
+        .map((p) => p.nome + " " + "[" + p.quantidade + "x" + "]")
+        .join(", ")}</p>
+    </div>
+    <span class="valor verde">R$${totalValor
+      .toFixed(2)
+      .replace(".", ",")}</span>
+    <div class="opcoes">
+      <button class="excluir" onclick="toggleOpcoes(this)">🗑️</button>
+    </div>
+  `;
+
+  novaMovimentacao.addEventListener("click", function (e) {
+    if (e.target.tagName === "BUTTON") return;
+    const opcoes = this.querySelector(".opcoes");
+    if (opcoes) {
+      opcoes.style.display =
+        opcoes.style.display === "none" || opcoes.style.display === ""
+          ? "flex"
+          : "none";
+    }
+  });
+
+  const container = document.querySelector(".movimentacoes");
+  if (container) {
+    container.appendChild(novaMovimentacao);
+  }
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
