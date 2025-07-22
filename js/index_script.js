@@ -41,13 +41,13 @@ window.onload = function () {
     if (mov.tipo === "entrada") {
       adicionarEntrada(mov.nome, mov.descricao, mov.preco, mov.id);
     } else if (mov.tipo === "saida") {
-      adicionarSaida(mov.nome, mov.descricao, mov.preco);
+      adicionarSaida(mov.nome, mov.descricao, mov.preco, mov.id);
     } else if (mov.tipo === "venda") {
       const nomesProdutos = Array.isArray(mov.produtos)
         ? mov.produtos.map((prod) => prod.nome).join(", ")
         : "Nenhum produto";
 
-      exibirVenda(mov.nome, mov.produtos, mov.valor);
+      exibirVenda(mov.nome, mov.produtos, mov.valor, mov.id);
     }
   });
 };
@@ -129,11 +129,12 @@ function adicionarEntrada(nomeProduto, descricao, preco, id) {
 
 window.adicionarEntrada = adicionarEntrada;
 
-function adicionarSaida(nomeProduto, descricao, preco) {
+function adicionarSaida(nomeProduto, descricao, preco, id) {
   preco = parseFloat(preco) || 0;
 
   const novaMovimentacao = document.createElement("div");
   novaMovimentacao.classList.add("movimento");
+  novaMovimentacao.dataset.id = id; // Atribui o id
   novaMovimentacao.innerHTML = `
     <div class="barra cor-vermelha"></div>
     <div class="info">
@@ -169,10 +170,9 @@ window.adicionarSaida = adicionarSaida;
 function adicionarVenda(nomeCliente, produtos, totalValor, id) {
   atualizarEstoqueVenda(produtos);
   totalValor = parseFloat(totalValor) || 0;
-
   const novaMovimentacao = document.createElement("div");
   novaMovimentacao.classList.add("movimento");
-  if(id) novaMovimentacao.dataset.id = id;
+  novaMovimentacao.dataset.id = id;
   novaMovimentacao.innerHTML = `
     <div class="barra cor-azul"></div>
     <div class="info">
@@ -247,7 +247,7 @@ function exibirVenda(nomeCliente, produtos, totalValor) {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+function atualizarResumoCaixa() {
   const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
 
   const totalEntrada = somarEntradas(movimentacoes);
@@ -270,6 +270,10 @@ window.addEventListener("DOMContentLoaded", () => {
       .toFixed(2)
       .replace(".", ",")}`;
   }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  atualizarResumoCaixa();
 });
 
 if (botaoCaixa) {
@@ -385,15 +389,7 @@ if (btnConfirmar) {
     console.log('Movimentação excluída com sucesso!');
 
     // Atualiza o valor do caixa
-    const valorCaixaEl = document.getElementById("valor-caixa");
-    if (valorCaixaEl) {
-      const movimentacoesAtualizadas = JSON.parse(localStorage.getItem("movimentacoes")) || [];
-      const totalEntrada = somarEntradas(movimentacoesAtualizadas);
-      const totalSaida = somarSaidas(movimentacoesAtualizadas);
-      valorCaixaAtual = totalEntrada - totalSaida;
-      valorCaixaEl.textContent = `R$${valorCaixaAtual.toFixed(2).replace(".", ",")}`;
-    }
-    
+    atualizarResumoCaixa();
     
   });
 }

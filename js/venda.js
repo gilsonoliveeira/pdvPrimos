@@ -1,9 +1,12 @@
 const produtos = JSON.parse(localStorage.getItem("produtos")) || [];
 
+
 function renderizarProdutos() {
+
+  
   const produtosPreCarregados = [
     {
-      id: 1,
+      id: 1, 
       imagem: "./images/pomada.jpg",
       nome: "Pomada",
       quantidade: 5,
@@ -53,6 +56,7 @@ function renderizarProdutos() {
 
   produtos.forEach((produto) => {
     const produtoDiv = document.createElement("div");
+    produtoDiv.setAttribute("data-id", produto.id);
     produtoDiv.className = "item-produto";
     produtoDiv.setAttribute("data-nome", produto.nome);
     produtoDiv.setAttribute("data-preco", parseFloat(produto.valor).toFixed(2));
@@ -140,9 +144,10 @@ document.querySelector(".botao-ver-sacola").addEventListener("click", () => {
       produto.querySelector(".quantidade").textContent
     );
     const imagem = produto.getAttribute("imagem");
+    const id = parseInt(produto.getAttribute("data-id"));
 
     if (quantidade > 0) {
-      sacola.push({ nome, preco, quantidade, imagem });
+      sacola.push({ id, nome, preco, quantidade, imagem });
     }
   });
 

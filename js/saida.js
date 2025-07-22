@@ -27,7 +27,7 @@ window.somarSaidas = somarSaidas; // Expor a função globalmente
 
 botaoConfirmar.addEventListener("click", (e) => {
   e.preventDefault();
-  let id = Math.floor(Math.random() * 1000);
+  let id = Date.now(); // Gerar um ID único baseado no timestamp
   if (validarCampos()) {
     const saidas = JSON.parse(localStorage.getItem("movimentacoes")) || [];
     const novaSaida = {
@@ -35,7 +35,7 @@ botaoConfirmar.addEventListener("click", (e) => {
       descricao: info.value.trim(),
       preco: parseFloat(valor.value),
       tipo: "saida",
-      id: id,
+      id,
     };
     saidas.push(novaSaida);
     localStorage.setItem("movimentacoes", JSON.stringify(saidas));
@@ -49,7 +49,7 @@ botaoConfirmar.addEventListener("click", (e) => {
       preco.value = "";
     }, 2000);
 
-    adicionarSaida(novaSaida.nome, novaSaida.descricao, novaSaida.preco);
+    adicionarSaida(novaSaida.nome, novaSaida.descricao, novaSaida.preco, novaSaida.id);
   }
 });
 
