@@ -47,7 +47,7 @@ function salvarNoLocalStorage(produto) {
   localStorage.setItem("movimentacoes", JSON.stringify(produtosSalvos));
 }
 
-let id = Date.now(); // Gera id com base na hora atual.
+let id = Date.now(); // Gera um ID único baseado no timestamp atual
 
 confirmar.addEventListener("click", function (event) {
   event.preventDefault();
@@ -75,6 +75,6 @@ confirmar.addEventListener("click", function (event) {
     valorEntrada.textContent = `R$${produto.preco.toFixed(2)}`;
 
     // Chama a função para adicionar a entrada
-    adicionarEntrada(produto.nome, produto.descricao, produto.preco);
+    adicionarEntrada(produto.nome, produto.descricao, produto.preco, produto.id);
   }
 });

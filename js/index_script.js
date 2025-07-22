@@ -26,6 +26,7 @@ window.onload = function () {
   if (movimentacoes.length === 0) {
     const novaMovimentacao = document.createElement("div");
     novaMovimentacao.classList.add("movimento");
+    novaMovimentacao.dataset.id = id;
     novaMovimentacao.innerHTML = `
     <strong>Sem movimentações até o momento!</strong>
   `;
@@ -38,7 +39,7 @@ window.onload = function () {
 
   movimentacoes.forEach((mov) => {
     if (mov.tipo === "entrada") {
-      adicionarEntrada(mov.nome, mov.descricao, mov.preco);
+      adicionarEntrada(mov.nome, mov.descricao, mov.preco, mov.id);
     } else if (mov.tipo === "saida") {
       adicionarSaida(mov.nome, mov.descricao, mov.preco);
     } else if (mov.tipo === "venda") {
@@ -92,11 +93,11 @@ function addData() {
 
 addData();
 
-function adicionarEntrada(nomeProduto, descricao, preco) {
+function adicionarEntrada(nomeProduto, descricao, preco, id) {
   preco = parseFloat(preco) || 0;
-
   const novaMovimentacao = document.createElement("div");
   novaMovimentacao.classList.add("movimento");
+  novaMovimentacao.dataset.id = id; // Atribui o id 
   novaMovimentacao.innerHTML = `
     <div class="barra cor-verde"></div>
     <div class="info">
@@ -165,12 +166,13 @@ function adicionarSaida(nomeProduto, descricao, preco) {
 
 window.adicionarSaida = adicionarSaida;
 
-function adicionarVenda(nomeCliente, produtos, totalValor) {
+function adicionarVenda(nomeCliente, produtos, totalValor, id) {
   atualizarEstoqueVenda(produtos);
   totalValor = parseFloat(totalValor) || 0;
 
   const novaMovimentacao = document.createElement("div");
   novaMovimentacao.classList.add("movimento");
+  if(id) novaMovimentacao.dataset.id = id;
   novaMovimentacao.innerHTML = `
     <div class="barra cor-azul"></div>
     <div class="info">
@@ -361,14 +363,38 @@ function finalizarFechamento() {
 const btnConfirmar = document.getElementById("confirmar-exclusao");
 const btnCancelar = document.getElementById("cancelar-exclusao");
 
+// Evento para confirmar a exclusão de uma movimentação
 if (btnConfirmar) {
   btnConfirmar.addEventListener("click", () => {
+
+    const idParaExcluir = movimentoParaExcluir.dataset.id;
+
     if (movimentoParaExcluir) {
       movimentoParaExcluir.remove();
       movimentoParaExcluir = null;
     }
     const modalExcluir = document.getElementById("modal-excluir");
     if (modalExcluir) modalExcluir.style.display = "none";
+
+    // Remove a movimentação do localStorage
+    let movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+    movimentacoes = movimentacoes.filter(
+      (mov) => mov.id !== parseInt(idParaExcluir)
+    );
+    localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
+    console.log('Movimentação excluída com sucesso!');
+
+    // Atualiza o valor do caixa
+    const valorCaixaEl = document.getElementById("valor-caixa");
+    if (valorCaixaEl) {
+      const movimentacoesAtualizadas = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+      const totalEntrada = somarEntradas(movimentacoesAtualizadas);
+      const totalSaida = somarSaidas(movimentacoesAtualizadas);
+      valorCaixaAtual = totalEntrada - totalSaida;
+      valorCaixaEl.textContent = `R$${valorCaixaAtual.toFixed(2).replace(".", ",")}`;
+    }
+    
+    
   });
 }
 
