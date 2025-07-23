@@ -153,3 +153,5 @@ document.querySelector(".botao-ver-sacola").addEventListener("click", () => {
 
   localStorage.setItem("sacola", JSON.stringify(sacola));
 });
+  
+

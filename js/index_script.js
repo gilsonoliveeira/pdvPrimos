@@ -388,6 +388,21 @@ if (btnConfirmar) {
     localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
     console.log('Movimentação excluída com sucesso!');
 
+    // Verifica se ainda tem movimentaçoes para exibir a mensagem //
+    if (movimentacoes.length === 0) {
+    const novaMovimentacao = document.createElement("div");
+    novaMovimentacao.classList.add("movimento");
+    novaMovimentacao.dataset.id = id;
+    novaMovimentacao.innerHTML = `
+    <strong>Sem movimentações até o momento!</strong>
+  `;
+    novaMovimentacao.style.justifyContent = "center";
+    novaMovimentacao.style.color = "red";
+
+    const container = document.querySelector(".movimentacoes");
+    container.appendChild(novaMovimentacao);
+  }
+
     // Atualiza o valor do caixa
     atualizarResumoCaixa();
     
